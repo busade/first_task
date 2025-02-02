@@ -102,25 +102,4 @@ def num_check(number: str):
             raise HTTPException(status_code=400, detail="Failed to fetch fun fact.")
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail="Error connecting to Numbers API.")
-    # try :
-    #     response =requests.get(url.format(number))
-    #     logging.info(f"API response: {response.status_code}-{response.text}")
-    #     if response.status_code >= 400:
-    #         return {
-    #             "number":"alphabet",
-    #             "error": "failed to fetch data from number api", "status code": response.status_code}
-
-    #     return  {
-    #             "number":number, 
-    #             "is_prine":is_prime(number),
-    #             "is_perfect": perfect_square(number),
-    #             "properties":properties(number),
-    #             "digit_sum": digit_sum(number),
-    #             "fact":response.text
-    #             }
-    # except Exception as e:
-    #     logging.error(f"Error fetching  number fact : {e} ")
-    #     return {
-    #             "number":"alphabet",
-    #             "error": "failed to fetch data from number api", "status code": response.status_code}
-
+    
