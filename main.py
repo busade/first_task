@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 import requests, logging, math
@@ -75,11 +76,11 @@ def is_prime(n: int):
 @app.get ("/api/classify-number")
 def num_check(number: Optional[ str]=None):
     if number is None:
-        raise HTTPException (status_code=400, detail={"error": True})
+        return JSONResponse(content={"error": True}, status_code=400)
     try:
         number_int = int(number)
     except ValueError:
-        raise HTTPException(status_code=400,detail={"number": number, "error": True})
+        return JSONResponse(content={"number": number, "error": True},status_code=400)
 
     # Fetch fun fact about the number from Numbers API
     try:
@@ -94,6 +95,6 @@ def num_check(number: Optional[ str]=None):
                 "fun_fact": response.text
             }
         else:
-            raise HTTPException(status_code=400,detail={"error":True})
+            return JSONResponse({"error":True},status_code=400)
     except requests.exceptions.RequestException:
-            raise HTTPException(status_code=400, detail={"error": True})
+            return JSONResponse(content={"error": True},status_code=400 )
