@@ -47,7 +47,8 @@ Before running this application, ensure you have the following installed:
 ## Endpoint
 The app has only one endpoint `/api/classify-number?number=6`and it will connect with numbers.com API that takes a number and returns interesting mathematical properties about it, along with a fun fact..
 
-### Example
+### Expected Response:
+```json
     {
     "number": 6,
     "is_prime": false,
@@ -59,3 +60,30 @@ The app has only one endpoint `/api/classify-number?number=6`and it will connect
     "digit_sum": 6,
     "fun_fact": "6 is the first discrete biprime (2.3) and the first member of the (2.q) discrete biprime family."
 }
+```
+## API Endpoints
+### **GET /api/classify-number**
+#### Request:
+```sh
+GET /api/classify-number?number=28
+```
+
+#### Success Response (200 OK):
+```json
+{
+  "number": 28,
+  "is_prime": false,
+  "is_perfect": true,
+  "properties": ["even"],
+  "digit_sum": 10,
+  "fun_fact": "28 is the  number."
+}
+```
+
+#### Error Response (400 Bad Request):
+```json
+{
+  "number": "abc",
+  "error": true
+}
+```

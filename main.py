@@ -75,11 +75,11 @@ def is_prime(n: int):
 @app.get ("/api/classify-number")
 def num_check(number: Optional[ str]=None):
     if number is None:
-        return {"error": True}
+        raise HTTPException (status_code=400, detail={"error": True})
     try:
         number_int = int(number)
     except ValueError:
-        return {"number": number, "error": True}
+        raise HTTPException(status_code=400,detail={"number": number, "error": True})
 
     # Fetch fun fact about the number from Numbers API
     try:
@@ -94,6 +94,6 @@ def num_check(number: Optional[ str]=None):
                 "fun_fact": response.text
             }
         else:
-            return {"error":True}
+            raise HTTPException(status_code=400,detail={"error":True})
     except requests.exceptions.RequestException:
-            return{"error": True}
+            raise HTTPException(status_code=400, detail={"error": True})
