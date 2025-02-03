@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 import requests, logging, math
+
 
 
 logging.basicConfig(level = logging.INFO)
@@ -37,29 +39,21 @@ def properties (n:int):
         props.append("odd")
     return props
 
-    # if even and is_armstrong:
-    #     properties =["armstrong","even"]
-    #     return properties
-    # elif not(even) and is_armstrong:
-    #     properties = ["armstrong", "odd"]
-    #     return properties
-    # elif even and not is_armstrong:
-    #     properties=['even']
-    #     return properties
-    # elif not even and not is_armstrong:
-    #     properties = ['odd']
-    #     return properties
+   
 
 
 def digit_sum(n:int):
     """Calculate the sum of the digits of a number."""
     return sum(int(digit) for digit in str(n))
-def perfect_square(n:int):
-    """Check if a number is a perfect square."""
-    if n < 0:
-        return False
-    sqrt = math.sqrt(n)
-    return sqrt == int(sqrt)
+def perfect_number(n:int):
+    """Check if a number is a perfect ."""
+    sum_divisor = 1
+    for i in range (2, int(n**0.5)+1):
+        if n % i ==0:
+            sum_divisor+=i
+            if i != n//i:
+                sum_divisor+=n//i
+    return  sum_divisor==n
 
 
 def is_prime(n: int):
@@ -79,12 +73,13 @@ def is_prime(n: int):
     
     
 @app.get ("/api/classify-number")
-def num_check(number: str):
-
+def num_check(number: Optional[ str]=None):
+    if number is None:
+        return {"error": True}
     try:
         number_int = int(number)
     except ValueError:
-        raise HTTPException(status_code=400, detail={"number": number, "error": True})
+        return {"number": number, "error": True}
 
     # Fetch fun fact about the number from Numbers API
     try:
@@ -93,13 +88,12 @@ def num_check(number: str):
             return {
                 "number": number_int,
                 "is_prime": is_prime(number_int),
-                "is_perfect": perfect_square(number_int),
+                "is_perfect": perfect_number(number_int),
                 "properties": properties(number_int),
                 "digit_sum": digit_sum(number_int),
                 "fun_fact": response.text
             }
         else:
-            raise HTTPException(status_code=400, detail="Failed to fetch fun fact.")
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail="Error connecting to Numbers API.")
-    
+            return {"error":True}
+    except requests.exceptions.RequestException:
+            return{"error": True}
