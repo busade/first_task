@@ -21,9 +21,9 @@ app.add_middleware(
 url = "http://numbersapi.com/{}/math"
 def is_armstrong(n:int):
     """Check if a number is an Armstrong number."""
-    digits = [int(d) for d in str(n)]
+    digits = [int(d) for d in str(abs(n))]
     power = len(digits)
-    return sum(d ** power for d in digits) == n
+    return sum(d ** power for d in digits) == abs(n)
 
 
 def even(n:int):
@@ -45,9 +45,12 @@ def properties (n:int):
 
 def digit_sum(n:int):
     """Calculate the sum of the digits of a number."""
-    return sum(int(digit) for digit in str(n))
+    return sum(int(digit) for digit in str(abs(n)))
+
 def perfect_number(n:int):
     """Check if a number is a perfect ."""
+    if n < 0:
+        return False
     sum_divisor = 1
     for i in range (2, int(n**0.5)+1):
         if n % i ==0:
