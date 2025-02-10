@@ -24,7 +24,7 @@ Before running this application, ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/busade/first_task
+   https://github.com/busade/hngx-stage1-numberClassifcation.git
 
 2. Create a virtual environment:
     ```bash
